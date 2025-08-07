@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "974281981376",
+    "project_id": "fir-practice-3ad5b",
+    "storage_bucket": "fir-practice-3ad5b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974281981376:android:bebaf70c493147a12b1c25",
+        "android_client_info": {
+          "package_name": "com.umartech.firebase_practice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzZSltESA1ElvqrOFhbhv2fBgtKGwkvM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
