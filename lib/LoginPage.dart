@@ -30,6 +30,7 @@ class LoginState extends State<Login>
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.deepPurple,
           title: Text("Login",style: TextStyle(color: Colors.white),),
           centerTitle: true,

@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'LoginPage.dart';
 import 'SignupPage.dart';
+import 'splash.dart';
 
 
 void main()async
@@ -29,7 +30,7 @@ void main()async
             seedColor: Colors.deepPurple
         ),
       ),
-      home:Login(),
+      home:Splash(),
     )
   );
 }
