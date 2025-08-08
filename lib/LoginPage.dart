@@ -1,7 +1,9 @@
+import 'package:firebase_practice/Posts/postScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'SignupPage.dart';
+import 'Utils/utils.dart';
 
 class Login extends StatefulWidget
 {
@@ -9,9 +11,11 @@ class Login extends StatefulWidget
 }
 class LoginState extends State<Login>
 {
+  bool isLoading=false;
   final _formKey=GlobalKey<FormState>();
   final emailController=TextEditingController();
   final passwordController=TextEditingController();
+  final _auth=FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -25,7 +29,7 @@ class LoginState extends State<Login>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: ()async {
-        SystemNavigator.pop();
+        await SystemNavigator.pop();
         return true;
       },
       child: Scaffold(
@@ -71,8 +75,6 @@ class LoginState extends State<Login>
                       validator: (v){
                         if(v!.isEmpty)
                           return "Empty Field";
-                        if(v!.length<8)
-                          return "Minimum 8 characters";
                         return null;
                       },
                     ),
@@ -85,10 +87,27 @@ class LoginState extends State<Login>
                 child: ElevatedButton(onPressed: (){
                   if(_formKey.currentState!.validate())
                     {
-
+                      setState(() {
+                        isLoading=true;
+                      });
+                      _auth.signInWithEmailAndPassword(
+                        email:emailController.text,
+                        password:passwordController.text,
+                      ).then((v){
+                        Utils().toastMessage(v.user!.email.toString());
+                        setState(() {
+                          isLoading=false;
+                        });
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PostScreen()));
+                      }).onError((error,stack){
+                        Utils().toastMessage(error.toString());
+                        setState(() {
+                          isLoading=false;
+                        });
+                      });
                     }
                 },
-                    child: Text("Login"),
+                  child:isLoading?const CircularProgressIndicator(color: Colors.white,strokeWidth: 3,):const Text("Login"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     foregroundColor: Colors.white,

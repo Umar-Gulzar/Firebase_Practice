@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import '../LoginPage.dart';
 import 'package:flutter/material.dart';
 
@@ -15,21 +16,27 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.deepPurple,
-        title: Text("Post",style: TextStyle(color: Colors.white),),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            tooltip: "Log Out",
-              onPressed: (){
-            _auth.signOut().then((v){  ///First signOut then move to login page.
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
-            });
-          }, icon:Icon(Icons.logout)),
-        ],
+    return WillPopScope(
+      onWillPop: ()async {
+        await SystemNavigator.pop();
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.deepPurple,
+          title: Text("Post",style: TextStyle(color: Colors.white),),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              tooltip: "Log Out",
+                onPressed: (){
+              _auth.signOut().then((v){  ///First signOut then move to login page.
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+              });
+            }, icon:Icon(Icons.logout)),
+          ],
+        ),
       ),
     );
   }

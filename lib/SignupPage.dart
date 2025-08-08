@@ -4,16 +4,18 @@ import 'LoginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'Utils/utils.dart';
+
 class Signup extends StatefulWidget
 {
   State<Signup> createState()=>SignupState();
 }
 class SignupState extends State<Signup>
 {
+  bool isLoading=false;
   final _formKey=GlobalKey<FormState>();
   final emailController=TextEditingController();
   final passwordController=TextEditingController();
-
   final _auth=FirebaseAuth.instance;
 
   @override
@@ -82,13 +84,26 @@ class SignupState extends State<Signup>
               child: ElevatedButton(onPressed: (){
                 if(_formKey.currentState!.validate())
                 {
+                  setState(() {
+                    isLoading=true;
+                  });
                   _auth.createUserWithEmailAndPassword(
                       email:emailController.text,
                       password:passwordController.text,
-                  );
+                  ).then((v){
+                    Utils().toastMessage("Saved");
+                    setState(() {
+                      isLoading=false;
+                    });
+                  }).onError((error,stack){
+                    Utils().toastMessage(error.toString());
+                    setState(() {
+                      isLoading=false;
+                    });
+                  });
                 }
               },
-                child: Text("Signup"),
+                child:isLoading?const CircularProgressIndicator(color: Colors.white,strokeWidth: 3,):const Text("Signup"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple,
                   foregroundColor: Colors.white,
