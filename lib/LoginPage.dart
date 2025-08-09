@@ -1,4 +1,5 @@
 import 'package:firebase_practice/Posts/postScreen.dart';
+import 'package:firebase_practice/phoneLoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -132,6 +133,18 @@ class LoginState extends State<Login>
                       )
                   )
                 ],
+              ),
+              const SizedBox(height: 50,),
+              OutlinedButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>PhoneLoginScreen()));
+              },
+                style: OutlinedButton.styleFrom(
+                  //backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.deepPurple,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))
+                  )),
+              child:const Text("Login with Phone"),
               )
             ],
           ),
