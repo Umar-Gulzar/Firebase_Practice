@@ -5,6 +5,7 @@ import 'package:firebase_practice/LoginPage.dart';
 import 'package:flutter/material.dart';
 
 import 'Posts/postScreen.dart';
+import 'Posts/showPostsScreen.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -24,7 +25,7 @@ class _SplashState extends State<Splash> {
       if(_currentUser==null)  ///If currentUser is null means it is not logged then move to login screen.
         Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
       else    ///if currentUser is not null means user is already logged then move to home screen.
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>PostScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowPostsScreen()));
     });
 
     // TODO: implement initState

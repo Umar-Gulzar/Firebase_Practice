@@ -3,6 +3,7 @@ import 'package:firebase_practice/phoneLoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'Posts/showPostsScreen.dart';
 import 'SignupPage.dart';
 import 'Utils/utils.dart';
 
@@ -99,7 +100,7 @@ class LoginState extends State<Login>
                         setState(() {
                           isLoading=false;
                         });
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PostScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowPostsScreen()));
                       }).onError((error,stack){
                         Utils().toastMessage(error.toString());
                         setState(() {

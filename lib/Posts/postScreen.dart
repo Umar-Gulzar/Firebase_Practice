@@ -19,97 +19,85 @@ class _PostScreenState extends State<PostScreen> {
   bool isLoading=false;
   final _auth=FirebaseAuth.instance;
   final _insertController=TextEditingController();
-
   final databaseRef=FirebaseDatabase.instanceFor(
-      app: Firebase.app(),                                  ///firebase Database ka url bhi dena zarori ha.
-      databaseURL: "https://fir-practice-3ad5b-default-rtdb.firebaseio.com/").ref('Post');  ///Here ref is like a table and name like Post is name of Table.
+      app: Firebase.app(),                                                  ///firebase Database ka url bhi dena zarori ha.
+      databaseURL: "https://fir-practice-3ad5b-default-rtdb.firebaseio.com/").ref('Post');
+  ///Here ref is like a table and name like Post is name of Table.
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: ()async {
-        await SystemNavigator.pop();
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.deepPurple,
-          title: Text("Post",style: TextStyle(color: Colors.white),),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              tooltip: "Log Out",
-                onPressed: (){
-              _auth.signOut().then((v){  ///First signOut then move to login page.
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
-              });
-            }, icon:Icon(Icons.logout)),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+        title: Text("Post",style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            tooltip: "Log Out",
+              onPressed: (){
+            _auth.signOut().then((v){  ///First signOut then move to login page.
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+            });
+          }, icon:Icon(Icons.logout)),
+        ],
+      ),
 
-        body: Padding(
-          padding:const EdgeInsets.all(50),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _insertController,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  hintText: "What is in your Mind?",
-                  border: OutlineInputBorder(),
-                ),
+      body: Padding(
+        padding:const EdgeInsets.all(50),
+        child: Column(
+          children: [
+            TextFormField(
+              controller: _insertController,
+              maxLines: 4,
+              decoration: InputDecoration(
+                hintText: "What is in your Mind?",
+                border: OutlineInputBorder(),
               ),
-              const SizedBox(height: 50,),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(onPressed: (){
+            ),
+            const SizedBox(height: 50,),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(onPressed: (){
+                setState(() {
+                  isLoading:true;
+                });
+                ///here child is like a nod/ID under a table and we can also take nested childs like .child().child()
+                ///.set({}) is used to create data.
+                ///To keep all IDs unique make a Id var.and assign it
+               String id=DateTime.now().microsecondsSinceEpoch.toString();
+               ///agar id var. ky alawa direct dy gy at diff. places tu id ma faraq at diff. places aa sakta ha.
+                databaseRef.child(id).set(///set ki brackets ma {} lagana zaroori han.
+                    {
+                      "id": id,
+                      "title":_insertController.text
+                    }
+                ).then((v){
+                  Utils().toastMessage("Post Created");
                   setState(() {
-                    isLoading:true;
+                    isLoading=false;
                   });
-                  ///here child is like a nod/ID under a table and we can also take nested childs like .child().child()
-                  ///.set({}) is used to create data.
-                  ///To keep all IDs unique make a Id var.and assign it
-                 String id=DateTime.now().microsecondsSinceEpoch.toString();
-                 Map<String,dynamic> m={
-                   "id":1,
-                   "name":"umar",
-                   "rollNo":2,
-                   "class":"SE"
-                 };
-                  databaseRef.child(id).set(///set ki brackets ma {} lagana zaroori han.
-                      {
-                        "id": id,
-                        "title":_insertController.text
-                      }
-                  ).then((v){
-                    Utils().toastMessage("Post Created");
-                    setState(() {
-                      isLoading=false;
-                    });
-                  }).onError((e,stack){
-                    Utils().toastMessage(e.toString());
-                    setState(() {
-                      isLoading=false;
-                    });
+                }).onError((e,stack){
+                  Utils().toastMessage(e.toString());
+                  setState(() {
+                    isLoading=false;
                   });
+                });
 
-                },
-                  child:isLoading?const CircularProgressIndicator(color: Colors.white,strokeWidth: 3,):const Text("Add"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))
-                    ),
+              },
+                child:isLoading?const CircularProgressIndicator(color: Colors.white,strokeWidth: 3,):const Text("Add"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-
       ),
+
     );
   }
 }
