@@ -18,6 +18,7 @@ class ShowPostsScreen extends StatefulWidget {
 
 class _ShowPostsScreenState extends State<ShowPostsScreen> {
 
+  final _updateController=TextEditingController();
   final _searchController=TextEditingController();
   final _auth=FirebaseAuth.instance;
   final databaseRef=FirebaseDatabase.instanceFor(
@@ -25,9 +26,43 @@ class _ShowPostsScreenState extends State<ShowPostsScreen> {
       databaseURL: "https://fir-practice-3ad5b-default-rtdb.firebaseio.com/").ref('Post');
   ///Here ref is like a table and name like Post is name of Table.
 
+
+  Future<void> showMyDialog(String title,String id)async
+  {
+    _updateController.text=title;  ///Imp
+    return showDialog(context: context, builder:(context){
+      return AlertDialog(
+        title: Text("Update"),
+        content: TextFormField(
+          controller: _updateController,
+          maxLines: 3,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: "New Data"
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Cancel")),
+          TextButton(onPressed: (){
+            Navigator.pop(context);
+            databaseRef.child(id).update({
+              'title':_updateController.text,
+            }).then((v){
+              Utils().toastMessage("Post Updated");
+            }).onError((e,s){
+              Utils().toastMessage(e.toString());
+            });
+          }, child:Text("Update")),
+        ],
+      );
+    });
+  }
+
+
   @override
   void dispose() {
     _searchController.dispose();
+    _updateController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -84,6 +119,16 @@ class _ShowPostsScreenState extends State<ShowPostsScreen> {
                     title: Text(snapshot.child('title').value.toString()),
                     ///table ky har child ky title ki value do
                     subtitle: Text(snapshot.child('id').value.toString()),
+                    trailing: PopupMenuButton(itemBuilder: (context){
+                      return [
+                        PopupMenuItem(
+                          onTap: (){
+                            showMyDialog(snapshot.child('title').value.toString(), snapshot.child('id').value.toString());
+                          },
+                            child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Icon(Icons.edit),Text("Edit")],)),
+                        PopupMenuItem(child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Icon(Icons.delete),Text("Delete")],))
+                      ];
+                    }),
                   );
                 }
                 else if (title.toLowerCase().contains(_searchController.text.toLowerCase())) {
@@ -91,6 +136,16 @@ class _ShowPostsScreenState extends State<ShowPostsScreen> {
                     title: Text(snapshot.child('title').value.toString()),
                     ///table ky har child ky title ki value do
                     subtitle: Text(snapshot.child('id').value.toString()),
+                    trailing: PopupMenuButton(itemBuilder: (context){
+                      return [
+                        PopupMenuItem(
+                            onTap: (){
+                              showMyDialog(snapshot.child('title').value.toString(), snapshot.child('id').value.toString());
+                            },
+                            child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Icon(Icons.edit),Text("Edit")],)),
+                        PopupMenuItem(child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Icon(Icons.delete),Text("Delete")],))
+                      ];
+                    }),
                   );
                 }
                 else
