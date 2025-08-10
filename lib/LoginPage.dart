@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'Posts/showPostsScreen.dart';
 import 'SignupPage.dart';
 import 'Utils/utils.dart';
+import 'FireStore/showUsersScreen.dart';
 
 class Login extends StatefulWidget
 {
@@ -100,7 +101,7 @@ class LoginState extends State<Login>
                         setState(() {
                           isLoading=false;
                         });
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowPostsScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowUsersScreen()));
                       }).onError((error,stack){
                         Utils().toastMessage(error.toString());
                         setState(() {
