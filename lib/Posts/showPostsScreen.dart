@@ -126,7 +126,12 @@ class _ShowPostsScreenState extends State<ShowPostsScreen> {
                             showMyDialog(snapshot.child('title').value.toString(), snapshot.child('id').value.toString());
                           },
                             child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Icon(Icons.edit),Text("Edit")],)),
-                        PopupMenuItem(child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Icon(Icons.delete),Text("Delete")],))
+                        PopupMenuItem(
+                            onTap:(){
+                              databaseRef.child(snapshot.child('id').value.toString()).remove();   ///To delete
+                              ///here use snapshot.child(//)...instead of only 'id' inside the child of ref.
+                            },
+                            child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,children: [Icon(Icons.delete),Text("Delete")],))
                       ];
                     }),
                   );
