@@ -192,7 +192,10 @@ class _ShowUsersScreenState extends State<ShowUsersScreen> {
 ///Method 2-by snapshots() it  Keep Listening (Realtime Updates) for new data
             Expanded(
               child: StreamBuilder(
-                  stream:firestoreCollection.snapshots(),   ///here we will provide .snapshot() mean stream of table
+                  stream:firestoreCollection.where('creater',isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                  ///By using .where() we only display data to creater user.
+
+                  ///here we will provide .snapshot() mean stream of table
                   ///.snapshots() → Opens a realtime stream — app updates automatically if collection docs  changes
                   ///
                   ///agar yaha par firestoreCollection.doc(id--->copy from firebase console).snapshots()
@@ -231,6 +234,7 @@ class _ShowUsersScreenState extends State<ShowUsersScreen> {
                                   PopupMenuItem(
                                       onTap: (){
                                         firestoreCollection.doc(snapshot.data!.docs[index].data()['id']).delete();
+                                        ///we cannot delete collection but when delete all docs collection is automatically disappear.
                                       },
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

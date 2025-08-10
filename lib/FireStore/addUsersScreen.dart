@@ -69,7 +69,10 @@ class _AddUsersScreenState extends State<AddUsersScreen> {
                 firestoreCollection.doc(id).set(///set ki brackets ma {} lagana zaroori han.
                     {
                       "id": id,
-                      "title":_insertController.text
+                      "title":_insertController.text,
+                      'postedAt':FieldValue.serverTimestamp(),
+                      "creater":FirebaseAuth.instance.currentUser!.uid.toString() ///creater will be current user so we
+                                                                                  ///provide his ID.
                     }
                 ).then((v){
                   Utils().toastMessage("User Created");
