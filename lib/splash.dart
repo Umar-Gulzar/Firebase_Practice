@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_practice/FirebaseStorage/imageUpload.dart';
 import 'package:firebase_practice/LoginPage.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,7 @@ class _SplashState extends State<Splash> {
       if(_currentUser==null)  ///If currentUser is null means it is not logged then move to login screen.
         Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
       else    ///if currentUser is not null means user is already logged then move to home screen.
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowUsersScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>ImageUpload()));
     });
 
     // TODO: implement initState
