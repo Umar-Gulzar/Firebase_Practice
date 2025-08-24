@@ -18,4 +18,20 @@ Mac command:  keytool -list -v -keystore ~/.android/debug.keystore -alias androi
 Windows command:  keytool -list -v -keystore "C:\Users\bilal\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
 Linux keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
 
+**_Push_Notification_**
+android/app/build.gradle ma  applicationId = "com.umartech.firebase_practice"  iss ma example change karna.
+# in android/app/build.gradle ma make these changes:     Error Fixed of local_notification....
+in compileOption{
+ //old code
+//add below
+isCoreLibraryDesugaringEnabled = true
+}
+and at end of this file add this:
+dependencies {
+// ✅ Kotlin DSL uses function style
+coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+}
+# ---------------------------------------------------------------------------------- #
 
+--->First get notification permission.
+--->get FCM/Device token then print it on console copy and paste in firebase console messaging

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_practice/PushNotification/pushNotification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,9 +14,19 @@ class ImageUpload extends StatefulWidget {
 
 class _ImageUploadState extends State<ImageUpload> {
 
-  File? _image;  ///jo gallery sy hum image pick karty han wo aik file hoti ha
+  File? _image;  ///jo gallery sy hum image pick karty han wo aik file hoti ha.
   final picker=ImagePicker();
-
+@override
+  void initState() {
+  NotificationServices().requestNotificationPermission();
+  NotificationServices().getDeviceToken().then((value){
+    print(value!);
+    NotificationServices().isTokenRefresh();
+  }
+  );
+    // TODO: implement initState
+    super.initState();
+  }
 
   Future getGalleryImage()async
   {
