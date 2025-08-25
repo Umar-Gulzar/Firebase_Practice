@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_practice/PushNotification/pushNotification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,9 +21,11 @@ class _ImageUploadState extends State<ImageUpload> {
   NotificationServices().requestNotificationPermission();
   NotificationServices().getDeviceToken().then((value){
     print(value!);
-    NotificationServices().isTokenRefresh();
-  }
-  );
+  });
+
+  NotificationServices().isTokenRefresh();
+  NotificationServices().firebaseMessage();
+
     // TODO: implement initState
     super.initState();
   }
@@ -81,6 +83,7 @@ class _ImageUploadState extends State<ImageUpload> {
 
               ElevatedButton(
                   onPressed: (){
+                    NotificationServices().showLocalNotification(title: "Image", body: "Your image is sented");
                   },
                   child:const Text("Upload"))
             ],

@@ -35,3 +35,7 @@ coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 
 --->First get notification permission.
 --->get FCM/Device token then print it on console copy and paste in firebase console messaging
+# Add below in android/aoo/src/main/AndroidManifest.xml
+<meta-data
+android:name="com.google.firebase.messaging.default_notification_channel_id"
+android:value="high_importance_channel" />
